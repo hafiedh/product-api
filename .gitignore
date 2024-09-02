@@ -1,0 +1,13 @@
+# Depedency Directory
+logs
+.vscode
+.DS_Store
+
+# Local configs
+.env
+
+gcs.json
+*.xlsx
+
+# Build Directory
+bin
