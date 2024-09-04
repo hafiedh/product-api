@@ -1,0 +1,43 @@
+version: '3.9'
+
+services:
+  product-db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: product_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - proxy
+
+  product-api:
+    image: hafiedh/product-api:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8090:8090"
+    depends_on:
+      - product-db
+    environment:
+      PG_HOST: product-db
+      PG_PORT: "5432"
+      PG_DBUSER: postgres
+      PG_DBPASS: postgres
+      PG_DBNAME: product_db
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    name: proxy
+    external: true
+
+volumes:
+  postgres_data:
+    driver: local
