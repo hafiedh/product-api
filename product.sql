@@ -8,10 +8,8 @@ CREATE TABLE IF NOT EXISTS products (
     stock INTEGER NOT NULL DEFAULT 0,
     category VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    created_by VARCHAR(255) NOT NULL,
+    created_by VARCHAR(255) DEFAULT 'SYSTEM',
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_by VARCHAR(255) NOT NULL,
-    deleted_at TIMESTAMP DEFAULT NULL,
-    deleted_by VARCHAR(255) DEFAULT NULL
+    deleted_at TIMESTAMP DEFAULT NULL
 );
  CREATE INDEX idx_products_name ON products USING btree (name);

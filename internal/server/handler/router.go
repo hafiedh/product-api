@@ -11,4 +11,13 @@ func SetupRouter(e *echo.Echo, cnt *container.Container) {
 
 	e.GET("/", h.healthCheckHandler.HealthCheck)
 
+	product := e.Group("/v1/products")
+	{
+		product.POST("", h.productHandler.CreateProduct)
+		product.GET("", h.productHandler.GetProducts)
+		product.GET("/:id", h.productHandler.GetProduct)
+		product.PUT("/:id", h.productHandler.UpdateProduct)
+		product.DELETE("/:id", h.productHandler.DeleteProduct)
+	}
+
 }

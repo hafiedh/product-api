@@ -5,8 +5,10 @@ import (
 	"os"
 
 	"api-product/internal/config"
+	"api-product/internal/domain/repositories"
 	"api-product/internal/infrastructure/postgres"
 	"api-product/internal/usecase/healthcheck"
+	"api-product/internal/usecase/product"
 
 	"github.com/jackc/pgx/v4/pgxpool"
 )
@@ -15,6 +17,7 @@ type Container struct {
 	Config             *config.DefaultConfig
 	PostgresDB         *pgxpool.Pool
 	HealthCheckService healthcheck.Service
+	ProductService     product.ProductSvc
 }
 
 func (c *Container) Validate() *Container {
@@ -60,10 +63,14 @@ func New() *Container {
 	}
 	healthCheckService := healthcheck.NewService().Validate()
 
+	productRepo := repositories.NewProductRepo(postgresDB)
+	productService := product.NewProductSvc(productRepo)
+
 	container := &Container{
 		Config:             defConfig,
 		HealthCheckService: healthCheckService,
 		PostgresDB:         postgresDB,
+		ProductService:     productService,
 	}
 	container.Validate()
 	return container
